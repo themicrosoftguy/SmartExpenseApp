@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<the49:BottomSheet xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+            xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+            xmlns:buttons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+            x:Class="SmartExpenseApp.Views.AccountBottomSheetView">
+
+    <the49:BottomSheet.Detents>
+        <!-- Stop at the height of the screen -->
+        <the49:FullscreenDetent />
+        <!-- Stop at the height of the page content -->
+        <the49:ContentDetent />
+        <!-- Stop at 120dp -->
+        <the49:HeightDetent Height="120" />
+        <!-- Stop at 45% of the screen height -->
+        <the49:RatioDetent Ratio="0.45" />
+        <!-- Stop at the height of the divider view -->
+        <the49:AnchorDetent Anchor="{x:Reference divider}" />
+    </the49:BottomSheet.Detents>
+    
+    <VerticalStackLayout>
+        <inputLayout:SfTextInputLayout 
+            Hint="Name" 
+            ContainerBackground="White" 
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="End"
+            HeightRequest="80" >
+                <Entry Placeholder="Name" BackgroundColor="White" TextColor="Black"/>   
+        </inputLayout:SfTextInputLayout>
+        <Picker 
+            Title="Account Type" 
+            ItemsSource="{Binding AccountTypes}" 
+            SelectedIndexChanged="Picker_SelectedIndexChanged"
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="End"
+            HeightRequest="80" />
+
+
+        <buttons:SfButton 
+            x:Name="bank_button" 
+            IsVisible="False" 
+            Text="" 
+            ImageSource="back_arrow.png" 
+            ShowIcon="True"
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="End"
+            HeightRequest="50"
+            WidthRequest="50" />
+
+        <Button 
+            Text="Continue" 
+            Margin="20"  
+            BackgroundColor="#7F3DFF" 
+            TextColor="White" 
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="End"
+            HeightRequest="60"/>
+    </VerticalStackLayout>
+</the49:BottomSheet>

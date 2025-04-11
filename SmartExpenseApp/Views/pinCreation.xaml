@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartExpenseApp.Views.pinCreation"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Smart Expense - Create PIN"
+             BackgroundColor="#7E44E3">
+
+    <Grid Padding="20" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!-- Title -->
+        <Label Grid.Row="0" 
+               Text="Enter 4-digit PIN" 
+               FontSize="24" 
+               TextColor="White" 
+               VerticalOptions="StartAndExpand"
+               HorizontalOptions="Center" />
+
+        <!-- PIN Entry -->
+        <Entry Grid.Row="1"
+               VerticalOptions="Start"
+               HorizontalOptions="Center"
+               Keyboard="Numeric"
+               FontSize="30"
+               TextColor="white"
+               WidthRequest="180"
+               HorizontalTextAlignment="Center"
+               MaxLength="4" />
+
+        <!-- Submit Button -->
+        <Button  Grid.Row="1"  
+                 Text="Submit"
+                 BackgroundColor="white"
+                 TextColor="BLAck"
+                 FontAttributes="Bold"
+                 HeightRequest="50"
+                 CornerRadius="25"
+                 Margin="0,20,0,0" 
+                 HorizontalOptions="FillAndExpand" 
+                 VerticalOptions="Center"
+                 Clicked="OnSubmitClicked"/>
+    </Grid>
+</ContentPage>

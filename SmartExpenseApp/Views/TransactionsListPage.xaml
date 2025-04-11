@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartExpenseApp.Views.TransactionsListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:SmartExpenseApp.Converters"
+    xmlns:models="clr-namespace:SmartExpenseApp.Models;assembly=SmartExpenseApp"
+    Title="Smart Expense - Transactions">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToImageSourceConverter x:Key="CategoryToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Button
+            x:Name="FilterButton"
+            Grid.Row="0"
+            Margin="5"
+            FontSize="16"
+            HeightRequest="20"
+            HorizontalOptions="End"
+            Text="Filter"
+            VerticalOptions="Center" />
+
+        <CollectionView
+            x:Name="collectionView"
+            Grid.Row="1"
+            BackgroundColor="White"
+            IsGrouped="true"
+            ItemsSource="{Binding GroupedTransactions}"
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            BackgroundColor="Beige"
+                            Padding="8">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+                            <Image
+                                HeightRequest="35"
+                                HorizontalOptions="Center"
+                                Source="{Binding Category, Converter={StaticResource CategoryToImageSourceConverter}}"
+                                VerticalOptions="Center"
+                                WidthRequest="35" />
+                        </Border>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5, 0, 0, 0"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="{Binding Title}"
+                            TextColor="#292B2D" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5, 0, 0, 0"
+                            FontSize="12"
+                            Text="{Binding IsManual}"
+                            TextColor="#91919F">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Value="1"
+                                    Binding="{Binding IsManual}"
+                                    TargetType="Label">
+                                    <Setter Property="Text" Value="Manual" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="0"
+                                    Binding="{Binding IsManual}"
+                                    TargetType="Label">
+                                    <Setter Property="Text" Value="Auto fetch - SMS" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="{Binding Amount}">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Value="Expense"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="Income"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Green" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="Scan"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Blue" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            FontSize="12"
+                            Text="{Binding Date}"
+                            TextColor="#91919F" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="models:TransactionGroup">
+                    <Label
+                        Margin="10"
+                        BackgroundColor="Transparent"
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        Text="{Binding Date}" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

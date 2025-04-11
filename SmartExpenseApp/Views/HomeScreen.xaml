@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartExpenseApp.Views.HomeScreen"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:SmartExpenseApp.Converters"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:tabview="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
+    Title="Smart Expense - Home">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToImageSourceConverter x:Key="CategoryToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Offset="0.0" Color="#A845FF" />
+                <GradientStop Offset="0.8" Color="#FFFFFF" />
+                <GradientStop Offset="1.0" Color="#FFFFFF" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid Grid.Row="0" VerticalOptions="Start">
+            <mct:AvatarView
+                Margin="10"
+                HeightRequest="40"
+                HorizontalOptions="Start"
+                ImageSource="profile_icon"
+                SemanticProperties.Description="Sample AvatarView showing size at 16x16 and 'micro' font."
+                WidthRequest="40">
+                <mct:AvatarView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToProfileCommand}" />
+                </mct:AvatarView.GestureRecognizers>
+            </mct:AvatarView>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1" Padding="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="Balance"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand" />
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="45"
+                HorizontalOptions="Center"
+                Text="{Binding Balance, StringFormat='₹{0:N2}'}"
+                TextColor="Black"
+                VerticalOptions="Center" />
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout
+            Grid.Row="2"
+            BackgroundColor="Transparent"
+            HorizontalOptions="CenterAndExpand"
+            Padding="5"
+            Spacing="5">
+
+            <Frame
+                Margin="0"
+                BackgroundColor="#00A86B"
+                CornerRadius="20"
+                Padding="0"
+                WidthRequest="175">
+
+                <Grid
+                    Margin="5,0,5,0"
+                    HorizontalOptions="FillAndExpand"
+                    Padding="10"
+                    VerticalOptions="CenterAndExpand">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        Source="income_icon.png"
+                        WidthRequest="30" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontSize="12"
+                        Text="Income"
+                        TextColor="#FFFFFF" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="{Binding TotalCreditTransactionsAmount, StringFormat='₹{0:N2}'}"
+                        TextColor="#FFFFFF" />
+                </Grid>
+            </Frame>
+            <Frame
+                Margin="0"
+                BackgroundColor="#FD3C4A"
+                CornerRadius="20"
+                Padding="0"
+                WidthRequest="175">
+                <Grid
+                    Margin="5,0,5,0"
+                    HorizontalOptions="FillAndExpand"
+                    Padding="10"
+                    VerticalOptions="CenterAndExpand">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0"
+                        Source="expense_icon.png"
+                        WidthRequest="30" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontSize="12"
+                        Text="Expenses"
+                        TextColor="#FFFFFF" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="{Binding TotalDebitTransactionsAmount, StringFormat='₹{0:N2}'}"
+                        TextColor="#FFFFFF" />
+                </Grid>
+            </Frame>
+        </HorizontalStackLayout>
+
+        <tabview:SfTabView
+            x:Name="tabView"
+            Grid.Row="3"
+            BackgroundColor="White"
+            HorizontalOptions="FillAndExpand"
+            IndicatorBackground="#FCEED4"
+            IndicatorCornerRadius="15"
+            IndicatorPlacement="Fill"
+            Padding="5"
+            SelectionChanged="tabView_SelectionChanged">
+            <tabview:SfTabView.Items>
+                <tabview:SfTabItem Header="Today">
+                    <tabview:SfTabItem.Content>
+                        <Grid BackgroundColor="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Margin="10"
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                HorizontalOptions="Start"
+                                Text="Recent Transactions"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Row="0"
+                                Margin="10"
+                                BackgroundColor="#EEE5FF"
+                                CornerRadius="18"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                HeightRequest="5"
+                                HorizontalOptions="End"
+                                Text="See All"
+                                TextColor="#7F3DFF"
+                                VerticalOptions="Center" 
+                                Command="{Binding NavigateToTransactionsListCommand}"/>
+
+                        </Grid>
+                    </tabview:SfTabItem.Content>
+                </tabview:SfTabItem>
+
+                <tabview:SfTabItem Header="Week">
+                    <tabview:SfTabItem.Content>
+                        <Grid BackgroundColor="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Margin="10"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Start"
+                                Text="Recent Transactions"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Row="0"
+                                Margin="10"
+                                BackgroundColor="#EEE5FF"
+                                HorizontalOptions="End"
+                                Text="See All"
+                                TextColor="#7F3DFF"
+                                VerticalOptions="Start" 
+                                Command="{Binding NavigateToTransactionsListCommand}"/>
+                        </Grid>
+                    </tabview:SfTabItem.Content>
+                </tabview:SfTabItem>
+
+                <tabview:SfTabItem Header="Month">
+                    <tabview:SfTabItem.Content>
+                        <Grid BackgroundColor="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Margin="10"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Start"
+                                Text="Recent Transactions"
+                                VerticalOptions="Center" />
+                            <Button
+                                Grid.Row="0"
+                                Margin="10"
+                                BackgroundColor="#EEE5FF"
+                                HorizontalOptions="End"
+                                Text="See All"
+                                TextColor="#7F3DFF"
+                                VerticalOptions="Start" 
+                                Command="{Binding NavigateToTransactionsListCommand}"/>
+                        </Grid>
+                    </tabview:SfTabItem.Content>
+                </tabview:SfTabItem>
+            </tabview:SfTabView.Items>
+        </tabview:SfTabView>
+
+        <ActivityIndicator
+            x:Name="LoadingIndicator"
+            Grid.Row="4"
+            Color="Orange"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center" />
+
+        <CollectionView
+            x:Name="RecentTransactionsCollectionView"
+            Grid.Row="5"
+            BackgroundColor="White"
+            ItemsSource="{Binding FilteredTransactions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            BackgroundColor="Beige"
+                            Padding="10">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+                            <Image
+                                HeightRequest="30"
+                                HorizontalOptions="Center"
+                                Source="{Binding Category, Converter={StaticResource CategoryToImageSourceConverter}}"
+                                VerticalOptions="Center"
+                                WidthRequest="30" />
+                        </Border>
+
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="5, 0, 0, 0"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="{Binding Title}"
+                            TextColor="#292B2D" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5, 0, 0, 0"
+                            FontSize="12"
+                            Text="{Binding IsManual}"
+                            TextColor="#91919F">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Value="1"
+                                    Binding="{Binding IsManual}"
+                                    TargetType="Label">
+                                    <Setter Property="Text" Value="Manual" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="0"
+                                    Binding="{Binding IsManual}"
+                                    TargetType="Label">
+                                    <Setter Property="Text" Value="Auto fetch - SMS" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="{Binding Amount}">
+                            <Label.Triggers>
+                                <DataTrigger
+                                    Value="Expense"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="Income"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Green" />
+                                </DataTrigger>
+                                <DataTrigger
+                                    Value="Scan"
+                                    Binding="{Binding TransactionType}"
+                                    TargetType="Label">
+                                    <Setter Property="TextColor" Value="Blue" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            FontSize="12"
+                            Text="{Binding Date}"
+                            TextColor="#91919F" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

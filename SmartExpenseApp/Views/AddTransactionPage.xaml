@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartExpenseApp.Views.AddTransactionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.Maui.Buttons;assembly=Syncfusion.Maui.Buttons"
+    xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+    xmlns:dateTimePicker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+    xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:inputs="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+    xmlns:picker="clr-namespace:Syncfusion.Maui.Picker;assembly=Syncfusion.Maui.Picker"
+    Title="AddTransactionPage">
+    <Grid
+        x:Name="AddTransactionPageGrid"
+        BackgroundColor="Red"
+        VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <buttons:SfSegmentedControl
+            x:Name="TransactionTypeSegmentedControl"
+            Grid.Row="0"
+            Margin="10"
+            ItemsSource="{Binding SegmentItems}"
+            SelectedIndex="{Binding Transaction.TransactionType}"
+            SelectionChanged="TransactionTypeSegmentedControl_SelectionChanged" />
+
+        <Grid
+            x:Name="TransactionGrid"
+            Grid.Row="1"
+            VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- Red Background with Amount Display -->
+            <VerticalStackLayout
+                Grid.Row="0"
+                Margin="20"
+                VerticalOptions="End">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Start"
+                    Text="How much?"
+                    TextColor="#FCFCFC" />
+                <Entry
+                    x:Name="AmountEntry"
+                    FontAttributes="Bold"
+                    FontSize="54"
+                    HorizontalOptions="Start"
+                    Keyboard="Numeric"
+                    Placeholder="₹0"
+                    PlaceholderColor="#FFFFFF"
+                    Text="{Binding Transaction.Amount}"
+                    TextColor="#FFFFFF"
+                    WidthRequest="200" />
+            </VerticalStackLayout>
+
+            <ScrollView Grid.Row="1" HeightRequest="400">
+                <!-- White Section -->
+                <VerticalStackLayout
+                    BackgroundColor="White"
+                    Padding="10"
+                    Spacing="10"
+                    VerticalOptions="EndAndExpand">
+                    <!--<VerticalStackLayout Spacing="0" BackgroundColor="Aquamarine">-->
+                    <!-- Title Entry -->
+                    <inputLayout:SfTextInputLayout
+                        ContainerBackground="White"
+                        ContainerType="Outlined"
+                        HeightRequest="80"
+                        Hint="Title"
+                        HorizontalOptions="FillAndExpand"
+                        OutlineCornerRadius="12"
+                        VerticalOptions="StartAndExpand">
+                        <Entry x:Name="TitleEntry" Text="{Binding Transaction.Title}" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <HorizontalStackLayout HeightRequest="60" Spacing="3">
+                        <inputLayout:SfTextInputLayout
+                            ContainerBackground="White"
+                            ContainerType="Outlined"
+                            HeightRequest="80"
+                            Hint="Date"
+                            OutlineCornerRadius="12"
+                            WidthRequest="300">
+                            <Entry
+                                x:Name="DateEntry"
+                                IsReadOnly="True"
+                                Text="{Binding Transaction.Date}" />
+                        </inputLayout:SfTextInputLayout>
+
+                        <ImageButton
+                            Margin="5,0,0,10"
+                            Clicked="ExpenseButton_Clicked"
+                            Source="datetime_icon"
+                            VerticalOptions="Center" />
+
+                        <Border
+                            x:Name="Expenseframe"
+                            Margin="0"
+                            BackgroundColor="White"
+                            HorizontalOptions="Center"
+                            IsVisible="{OnPlatform WinUI=True, Android=True, Default=False}"
+                            Padding="0"
+                            StrokeShape="RoundRectangle 5,5,5,5"
+                            StrokeThickness="1"
+                            VerticalOptions="Center">
+                            <dateTimePicker:SfDateTimePicker
+                                x:Name="ExpenseTransactionDateTimePicker"
+                                CancelButtonClicked="TransactionDateTimePicker_CancelButtonClicked"
+                                IsOpen="False"
+                                Mode="Dialog"
+                                OkButtonClicked="TransactionDateTimePicker_OkButtonClicked">
+                                <dateTimePicker:SfDateTimePicker.FooterView>
+                                    <dateTimePicker:PickerFooterView Height="40" ShowOkButton="True" />
+                                </dateTimePicker:SfDateTimePicker.FooterView>
+                            </dateTimePicker:SfDateTimePicker>
+                        </Border>
+
+                    </HorizontalStackLayout>
+
+                    <inputLayout:SfTextInputLayout
+                        ContainerBackground="White"
+                        ContainerType="Outlined"
+                        HeightRequest="150"
+                        Hint="Enter description"
+                        HorizontalOptions="FillAndExpand"
+                        OutlineCornerRadius="12"
+                        VerticalOptions="StartAndExpand">
+
+                        <Editor
+                            x:Name="DescriptionEditor"
+                            HeightRequest="100"
+                            Text="{Binding Transaction.Description}" />
+                    </inputLayout:SfTextInputLayout>
+
+                    <core:SfTextInputLayout
+                        ContainerType="Filled"
+                        HeightRequest="56"
+                        Hint="Category"
+                        OutlineCornerRadius="12"
+                        ReserveSpaceForAssistiveLabels="False">
+                        <inputs:SfComboBox
+                            x:Name="CategoryPicker"
+                            FontSize="16"
+                            ItemsSource="{Binding Categories}"
+                            MaxDropDownHeight="150"
+                            SelectedIndex="0"
+                            SelectedItem="{Binding Transaction.Category}"
+                            ShowBorder="True" />
+                    </core:SfTextInputLayout>
+
+                    <core:SfTextInputLayout
+                        ContainerType="Filled"
+                        HeightRequest="56"
+                        Hint="Source"
+                        OutlineCornerRadius="12"
+                        ReserveSpaceForAssistiveLabels="False">
+                        <inputs:SfComboBox
+                            x:Name="SourcePicker"
+                            FontSize="16"
+                            ItemsSource="{Binding SourceList}"
+                            MaxDropDownHeight="150"
+                            SelectedIndex="0"
+                            SelectedItem="{Binding Transaction.Source}"
+                            ShowBorder="True" />
+                    </core:SfTextInputLayout>
+
+                    <!-- Continue Button -->
+                    <Button
+                        x:Name="AddTransactionButton"
+                        Margin="0,20,0,10"
+                        BackgroundColor="#7F3DFF"
+                        Clicked="AddTransactionButton_Clicked"
+                        CornerRadius="12"
+                        FontSize="18"
+                        HeightRequest="50"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Add Transaction"
+                        TextColor="White"
+                        VerticalOptions="End" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SmartExpenseApp.Views.ReadSMSMessagesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="SMS Reader">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2d006c" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <VerticalStackLayout
+        BackgroundColor="#D7D7D8"
+        Padding="10"
+        Spacing="5">
+        <Grid BackgroundColor="Transparent" RowSpacing="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button
+                x:Name="ReadSMSButton"
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="5,0,5,0"
+                Clicked="ReadSMSButton_Clicked"
+                FontSize="Default"
+                Text="Read SMS" />
+            <Entry
+                x:Name="SMSCountEntry"
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="5,0,5,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                MaxLength="5"
+                Placeholder="Enter SMS Count"
+                Text="200"
+                TextColor="Blue"
+                WidthRequest="75" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="5,0,5,0"
+                FontAttributes="Bold"
+                FontSize="Body"
+                Text="Total Debit Amount: "
+                TextColor="Blue" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="Body"
+                Text="{Binding TotalDebitTransactionsAmount}"
+                TextColor="Blue" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="5,0,5,0"
+                FontAttributes="Bold"
+                FontSize="Body"
+                Text="Total Credit Amount: "
+                TextColor="Blue" />
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="Body"
+                Text="{Binding TotalCreditTransactionsAmount}"
+                TextColor="Blue" />
+        </Grid>
+
+        <CollectionView
+            BackgroundColor="Transparent"
+            HeightRequest="530"
+            ItemsSource="{Binding SMSMessages}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="5"
+                        Background="#ffffff"
+                        HorizontalOptions="Center"
+                        Padding="10"
+                        Stroke="Blue"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <StackLayout Spacing="5">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="{Binding Address}"
+                                TextColor="Blue" />
+                            <Label Text="{Binding Message}" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="Small"
+                                Text="{Binding Date}"
+                                TextColor="ForestGreen" />
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Smart Expense - Transaction Details"
+             x:Class="SmartExpenseApp.Views.TransactionDetails">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- App Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Transaction Info -->
+            <RowDefinition Height="Auto"/>
+            <!-- Type, Category, Wallet -->
+            <RowDefinition Height="Auto"/>
+            <!-- Description -->
+            <RowDefinition Height="*"/>
+            <!-- Empty Space -->
+            <RowDefinition Height="Auto"/>
+            <!-- Edit Button -->
+        </Grid.RowDefinitions>
+
+        <!-- Amount and Transaction Info (Row 1) -->
+        <VerticalStackLayout Grid.Row="1" BackgroundColor="#7F3DFF" Padding="0,60, 0, 25" HorizontalOptions="FillAndExpand" Spacing="18">
+            <Label Text="{Binding Transaction.Amount}" FontSize="60" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" x:Name="TransactionAmount"/>
+            <Label Text="{Binding Transaction.Title}" FontSize="18" TextColor="White" HorizontalOptions="Center"/>
+            <Label Text="{Binding Transaction.Date}" FontSize="16" TextColor="White" HorizontalOptions="Center" x:Name="TransactionDateTime"/>
+        </VerticalStackLayout>
+
+        <!-- Type, Category, Wallet Details (Row 2) -->
+        <Frame Grid.Row="2" BorderColor="LightGray" CornerRadius="10" Padding="10">
+            <Grid ColumnSpacing="15" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*,*">
+                <!-- Type Column -->
+                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="Type" FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
+                    <Label FontSize="16" TextColor="Black" HorizontalOptions="Center" x:Name="LabelExpenseType" Text="{Binding Transaction.TransactionType}"/>
+                </VerticalStackLayout>
+
+                <!-- Category Column -->
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="Category" FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
+                    <Label FontSize="16" TextColor="Black" HorizontalOptions="Center" x:Name="LabelShopping" Text="{Binding Transaction.Category}"/>
+                </VerticalStackLayout>
+
+                <!-- Wallet Column -->
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                    <Label Text="Source" FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
+                    <Label FontSize="16" TextColor="Black" HorizontalOptions="Center" x:Name="LabelWallet" Text="{Binding Transaction.Source}"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- Description Section (Row 3) -->
+        <VerticalStackLayout Grid.Row="3" Margin="15">
+            <Label Text="Description" FontSize="22" TextColor="Gray" FontAttributes="Bold"/>
+            <Label x:Name="TransactionDescription" Text="{Binding Transaction.Description}" FontSize="16" TextColor="Black" Padding="0,10,0,0" />
+        </VerticalStackLayout>
+
+        <!-- Edit Button (Row 4) -->
+        <Button Grid.Row="4"
+                Text="Edit"
+                BackgroundColor="#7F3DFF"
+                TextColor="White"
+                CornerRadius="15"
+                FontSize="16"
+                Margin="20"
+                HeightRequest="55"
+                WidthRequest="340"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Command="{Binding EditTransactionCommand}"/>
+    </Grid>
+</ContentPage>

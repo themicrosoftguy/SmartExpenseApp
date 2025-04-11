@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartExpenseApp.Views.Profile"
+             Title="Profile">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+
+        <!-- Profile Picture and Username -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Profile Image -->
+            <Frame WidthRequest="80" HeightRequest="80" CornerRadius="40" BorderColor="violet" Padding="0" Grid.Column="0">
+                <Image Source="profile_icon.png" Aspect="AspectFill" />
+            </Frame>
+
+            <!-- Username and Edit Button -->
+            <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                <Label Text="DB Cooper" FontSize="Large" FontAttributes="Bold" />
+                <Label Text="Username" FontSize="Small" TextColor="Gray" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Option Buttons -->
+        <VerticalStackLayout Spacing="15">
+
+            <!-- Account Button -->
+            <Frame CornerRadius="10" BackgroundColor="#F0F0FF" Padding="15">
+                <HorizontalStackLayout>
+                    <Image Source="account_wallet_icon.png" WidthRequest="30" HeightRequest="30" />
+                    <Label Text="Account" FontSize="Medium" VerticalOptions="Center" Margin="10,0,0,0"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Settings Button -->
+            <Frame CornerRadius="10" BackgroundColor="#F0F0FF" Padding="15">
+                <HorizontalStackLayout>
+                    <Image Source="account_settings_icon.png" WidthRequest="30" HeightRequest="30" />
+                    <Label Text="Settings" FontSize="Medium" VerticalOptions="Center" Margin="10,0,0,0"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Export Data Button -->
+            <Frame CornerRadius="10" BackgroundColor="#F0F0FF" Padding="15">
+                <HorizontalStackLayout>
+                    <Image Source="account_upload_icon.png" WidthRequest="30" HeightRequest="30" />
+                    <Label Text="Export Data" FontSize="Medium" VerticalOptions="Center" Margin="10,0,0,0"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Logout Button -->
+            <Frame CornerRadius="10" BackgroundColor="#F0F0FF" Padding="15">
+                <HorizontalStackLayout>
+                    <Image Source="account_logout_icon.png" WidthRequest="30" HeightRequest="30" />
+                    <Label Text="Logout" FontSize="Medium" VerticalOptions="Center" Margin="10,0,0,0"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+
+    </VerticalStackLayout>
+
+</ContentPage>

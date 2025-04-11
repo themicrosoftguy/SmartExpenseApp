@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+             x:Class="SmartExpenseApp.Views.Login"
+             Title="Smart Expense">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label 
+            Text="Login" 
+            FontSize="20" 
+            FontAttributes="Bold" 
+            VerticalOptions="Center" 
+            HorizontalOptions="CenterAndExpand" />
+
+        <!-- Email Entry -->
+        <!-- Email Entry -->
+        <inputLayout:SfTextInputLayout Hint="Email" 
+                                       ContainerType="Outlined"
+                                       OutlineCornerRadius="20"
+                                       ContainerBackground="White"
+                                       VerticalOptions="StartAndExpand" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       HeightRequest="80"
+                                       WidthRequest="350">
+            <Entry x:Name="EmailEntry" Text="abc@gmail.com" />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Password Entry with Visibility Toggle -->
+        <inputLayout:SfTextInputLayout Grid.Row="3"
+                               Hint="Password" 
+                               EnablePasswordVisibilityToggle="True"
+                               ContainerType="Outlined"
+                               OutlineCornerRadius="20"
+                               ContainerBackground="White"
+                               VerticalOptions="StartAndExpand" 
+                               HorizontalOptions="CenterAndExpand"
+                               HeightRequest="80"
+                               WidthRequest="350">
+            <Entry x:Name="PasswordEntry" Text="pass@123" />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Login Button -->
+        <Button Text="Login"
+                BackgroundColor="#8B5CF6"
+                TextColor="White"
+                FontSize="16"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                CornerRadius="25"
+                Margin="0,20,0,0"
+                Clicked="OnLoginButtonClicked"/>
+
+        <!-- Sign Up Link -->
+        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,10,0,0">
+            <Label Text="Don’t have an account yet? " FontSize="14" TextColor="Gray" />
+            <Label Text="Sign Up" FontSize="14" TextColor="#8B5CF6" FontAttributes="Bold">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

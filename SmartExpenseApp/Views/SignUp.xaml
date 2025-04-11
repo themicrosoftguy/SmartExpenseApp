@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+             x:Class="SmartExpenseApp.Views.SignUp"
+             Title="Signup"
+             BackgroundColor="White">
+    <Grid Padding="0, 70, 0, 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Name Entry -->
+        <inputLayout:SfTextInputLayout x:Name="NameEntry"
+                                       Grid.Row="0"
+                                       Hint="Name" 
+                                       ContainerType="Outlined"
+                                       OutlineCornerRadius="20"
+                                       ContainerBackground="White"
+                                       VerticalOptions="StartAndExpand"
+                                       HorizontalOptions="CenterAndExpand"
+                                       HeightRequest="80"
+                                       WidthRequest="350">
+            <Entry />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Mobile Number Entry -->
+        <inputLayout:SfTextInputLayout x:Name="MobileEntry"
+                                       Grid.Row="1"
+                                       Hint="Mobile Number" 
+                                       ContainerType="Outlined"
+                                       OutlineCornerRadius="20"
+                                       ContainerBackground="White"
+                                       VerticalOptions="StartAndExpand" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       HeightRequest="80"
+                                       WidthRequest="350"> 
+            <Entry />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Email Entry -->
+        <inputLayout:SfTextInputLayout x:Name="EmailEntry"
+                                       Grid.Row="2"
+                                       Hint="Email" 
+                                       ContainerType="Outlined"
+                                       OutlineCornerRadius="20"
+                                       ContainerBackground="White"
+                                       VerticalOptions="StartAndExpand" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       HeightRequest="80"
+                                       WidthRequest="350">
+            <Entry />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Password Entry -->
+        <inputLayout:SfTextInputLayout x:Name="PasswordEntry"
+                                       Grid.Row="3"
+                                       Hint="Password" 
+                                       EnablePasswordVisibilityToggle="True"
+                                       ContainerType="Outlined"
+                                       OutlineCornerRadius="20"
+                                       ContainerBackground="White"
+                                       VerticalOptions="StartAndExpand" 
+                                       HorizontalOptions="CenterAndExpand"
+                                       HeightRequest="80"
+                                       WidthRequest="350">
+            <Entry />
+        </inputLayout:SfTextInputLayout>
+
+        <!-- Sign Up Button -->
+        <Button x:Name="SignupButton"
+                Text="Sign Up" 
+                Grid.Row="4"
+                BackgroundColor="#7B4FFF" 
+                TextColor="White"
+                FontSize="16"
+                CornerRadius="20" 
+                VerticalOptions="StartAndExpand" 
+                HorizontalOptions="CenterAndExpand"
+                HeightRequest="55"
+                WidthRequest="350"
+                Clicked="SignupButton_Clicked"/>
+
+        <!-- Login Link -->
+        <HorizontalStackLayout VerticalOptions="End" HorizontalOptions="Center" Margin="0,10,0,0" Grid.Row="5">
+            <Label Text="Already have an account? " FontSize="14" TextColor="Gray" />
+            <Label Text="Login" FontSize="14" TextColor="#8B5CF6" FontAttributes="Bold">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

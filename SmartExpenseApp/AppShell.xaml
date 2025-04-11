@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SmartExpenseApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SmartExpenseApp.Views"
+    Shell.BackgroundColor="#7F3DFF"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="Transparent"
+    Shell.TabBarForegroundColor="#7F3DFF"
+    Shell.TabBarTitleColor="#7F3DFF"
+    Shell.TabBarUnselectedColor="Gray"
+    Shell.TitleColor="#FFFFFF"
+    Title="SmartExpenseApp">
+
+    <ShellContent ContentTemplate="{DataTemplate local:Login}" Route="login" />
+    <!--<ShellContent ContentTemplate="{DataTemplate local:TransactionDetails}" Route="transactiondetails" />-->
+
+    <TabBar>
+        <Tab
+            Icon="home_bottomicon.png"
+            Route="home"
+            Title="Home">
+            <ShellContent ContentTemplate="{DataTemplate local:HomeScreen}" />
+        </Tab>
+
+        <Tab
+            Icon="transaction_bottomicon.png"
+            Route="transactions"
+            Title="Transactions">
+            <ShellContent ContentTemplate="{DataTemplate local:TransactionsListPage}" />
+        </Tab>
+
+        <Tab
+            Icon="add_button.png"
+            Route="addTransaction"
+            Title="Add">
+            <ShellContent ContentTemplate="{DataTemplate local:AddTransactionPage}" />
+        </Tab>
+
+        <Tab
+            Icon="graphstrends_bottomicon.png"
+            Route="trends"
+            Title="Trends">
+            <ShellContent ContentTemplate="{DataTemplate local:GraphAndTrends}" />
+        </Tab>
+
+        <Tab
+            Icon="profile_bottomicon.png"
+            Route="profile"
+            Title="Profile">
+            <ShellContent ContentTemplate="{DataTemplate local:Profile}" />
+        </Tab>
+    </TabBar>
+</Shell>
