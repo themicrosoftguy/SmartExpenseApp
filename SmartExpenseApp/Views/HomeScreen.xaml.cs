@@ -2,6 +2,7 @@ using MvvmHelpers.Commands;
 using SmartExpenseApp.Data;
 using SmartExpenseApp.Utilities;
 using SmartExpenseApp.ViewModels;
+using System.Diagnostics;
 
 namespace SmartExpenseApp.Views;
 
@@ -34,18 +35,25 @@ public partial class HomeScreen : ContentPage
         MainThread.BeginInvokeOnMainThread(
             async () =>
             {
-                viewModel.IsBusy = true;
+                try
+                {
+                    viewModel.IsBusy = true;
 
-                viewModel.TotalCreditTransactionsAmount = 0;
-                viewModel.TotalDebitTransactionsAmount = 0;
-                viewModel.Balance = 0;
+                    viewModel.TotalCreditTransactionsAmount = 0;
+                    viewModel.TotalDebitTransactionsAmount = 0;
+                    viewModel.Balance = 0;
 
-                await ((AsyncCommand<int>)viewModel.ReadSMSCommand).ExecuteAsync(Constants.SMSMessagesMaxFetchCount);
-                //database.DeleteAllTransactionsAsync();
+                    await ((AsyncCommand<int>)viewModel.ReadSMSCommand).ExecuteAsync(Constants.SMSMessagesMaxFetchCount);
+                    //database.DeleteAllTransactionsAsync();
 
-                viewModel.GetFilteredTransactionList(viewModel.TabViewCurrentSelectedIndex);
+                    viewModel.GetFilteredTransactionList(viewModel.TabViewCurrentSelectedIndex);
 
-                viewModel.IsBusy = false;
+                    viewModel.IsBusy = false;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("An Error occurred on {0} page. Error: {1}", nameof(HomeScreen), ex.Message);
+                }
             });
     }
 }

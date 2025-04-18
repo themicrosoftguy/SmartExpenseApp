@@ -37,6 +37,9 @@ namespace SmartExpenseApp
             builder.Services.AddSingleton<TransactionsListPage>();
             builder.Services.AddTransient<TransactionsListPage>();
 
+            builder.Services.AddSingleton<GraphAndTrends>();
+            builder.Services.AddTransient<GraphAndTrends>();
+
             builder.Services.AddSingleton<SmartExpenseAppDatabase>(provider =>
                 new SmartExpenseAppDatabase(Constants.DatabasePath));
 

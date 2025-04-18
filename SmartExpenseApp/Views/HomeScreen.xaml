@@ -72,7 +72,7 @@
             Grid.Row="2"
             BackgroundColor="Transparent"
             HorizontalOptions="CenterAndExpand"
-            Padding="5"
+            Padding="10"
             Spacing="5">
 
             <Frame
@@ -103,12 +103,12 @@
                         Grid.RowSpan="2"
                         Grid.Column="0"
                         Source="income_icon.png"
-                        WidthRequest="30" />
+                        WidthRequest="40" HeightRequest="40" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="1"
-                        Margin="5,0,0,0"
-                        FontSize="12"
+                        Margin="7,0,0,0"
+                        FontSize="14"
                         Text="Income"
                         TextColor="#FFFFFF" />
                     <Label
@@ -148,12 +148,12 @@
                         Grid.RowSpan="2"
                         Grid.Column="0"
                         Source="expense_icon.png"
-                        WidthRequest="30" />
+                        WidthRequest="40" HeightRequest="40" />
                     <Label
                         Grid.Row="0"
                         Grid.Column="1"
-                        Margin="5,0,0,0"
-                        FontSize="12"
+                        Margin="7,0,0,0"
+                        FontSize="14"
                         Text="Expenses"
                         TextColor="#FFFFFF" />
                     <Label

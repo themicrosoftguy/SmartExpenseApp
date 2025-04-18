@@ -1,12 +1,470 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SmartExpenseApp.Views.GraphAndTrends"
-             Title="Smart Expense - Trends">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="SmartExpenseApp.Views.GraphAndTrends"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.Maui.Buttons;assembly=Syncfusion.Maui.Buttons"
+    xmlns:charts="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+    xmlns:converters="clr-namespace:SmartExpenseApp.Converters"
+    xmlns:models="clr-namespace:SmartExpenseApp.Models;assembly=SmartExpenseApp"
+    xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
+    xmlns:tabview="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:viewModels="clr-namespace:SmartExpenseApp.ViewModels"
+    Title="Graphs and Trends">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToImageSourceConverter x:Key="CategoryToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid
+        ColumnDefinitions="*,*"
+        Padding="10"
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="10">
+
+        <Label x:Name="TotalTransactionsAmountLabel"
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="5"
+            FontAttributes="Bold"
+            FontSize="Large"
+            HorizontalOptions="Start"
+            IsVisible="{Binding IsSplineAreaChartVisible}"
+            Text="{Binding TotalTransactionsAmount, StringFormat='₹{0:F2}'}"
+            TextColor="Blue"
+            VerticalOptions="End"
+            VerticalTextAlignment="Center" />
+
+        <!-- 1st Row: Syncfusion SegmentedControl -->
+        <buttons:SfSegmentedControl
+            x:Name="ChartTypeSegmentedControl"
+            Grid.Row="0"
+            Grid.Column="1"
+            CornerRadius="9"
+            HorizontalOptions="End"
+            ItemsSource="{Binding SegmentedItems}"
+            SegmentWidth="51"
+            SelectedIndex="{Binding SelectedSegmentIndex}"
+            SelectionChanged="ChartTypeSegmentedControl_SelectionChanged">
+
+            <buttons:SfSegmentedControl.SelectionIndicatorSettings>
+                <buttons:SelectionIndicatorSettings Background="#7F3DFF" SelectionIndicatorPlacement="Fill" />
+            </buttons:SfSegmentedControl.SelectionIndicatorSettings>
+        </buttons:SfSegmentedControl>
+
+
+        <!-- 2nd Row: Syncfusion Spline Area and Circular Chart -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <charts:SfCartesianChart
+                x:Name="SplineAreaChart"
+                BackgroundColor="#f8f9fa"
+                HeightRequest="250"
+                IsVisible="{Binding IsSplineAreaChartVisible}">
+                <!-- Add Spline Area Chart configuration here -->
+                <!--Initialize the horizontal axis for the .NET MAUI Cartesian Chart.-->
+                <charts:SfCartesianChart.XAxes>
+                    <charts:CategoryAxis />
+                </charts:SfCartesianChart.XAxes>
+
+                <!--Initialize the vertical axis for the .NET MAUI Cartesian Chart.-->
+                <charts:SfCartesianChart.YAxes>
+                    <charts:NumericalAxis />
+                </charts:SfCartesianChart.YAxes>
+
+                <!--Adding Spline Series to the .NET MAUI Cartesian Chart.-->
+                <charts:SplineAreaSeries
+                    ItemsSource="{Binding FilteredTransactions}"
+                    Stroke="#3d0b9e"
+                    StrokeWidth="4"
+                    XBindingPath="Date"
+                    YBindingPath="Amount">
+
+                    <charts:SplineAreaSeries.Fill>
+                        <!--<SolidPaint BackgroundColor="#ffffff" />-->
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0" Color="#af8bf5" />
+                            <GradientStop Offset="1" Color="#ccb7f5" />
+                        </LinearGradientBrush>
+                    </charts:SplineAreaSeries.Fill>
+                    <!--<charts:SplineAreaSeries.MarkerSettings>
+                        <charts:ChartMarkerSettings Type="Diamond"
+                                       Fill="Brown"
+                                       Stroke="Black"
+                                       StrokeWidth="1"
+                                       Height="8"
+                                       Width="8"/>
+                    </charts:SplineAreaSeries.MarkerSettings>-->
+
+                </charts:SplineAreaSeries>
+            </charts:SfCartesianChart>
+
+            <charts:SfCircularChart
+                x:Name="CircularChart"
+                Margin="0"
+                BackgroundColor="#f8f9fa"
+                HeightRequest="250"
+                IsVisible="{Binding IsCircularChartVisible}">
+                <!-- Add Circular Chart configuration here -->
+
+                <charts:DoughnutSeries
+                    EndAngle="630"
+                    InnerRadius="0.7"
+                    ItemsSource="{Binding GroupedCategoryTransactions}"
+                    ShowDataLabels="False"
+                    StartAngle="270"
+                    XBindingPath="Category"
+                    YBindingPath="TotalAmount" x:Name="CategoryDoughnutSeries">
+
+                    <!-- Simulated 3D effect with gradient brushes -->
+                    <charts:DoughnutSeries.PaletteBrushes>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#FF6384" />
+                            <GradientStop Offset="1.0" Color="#C2185B" />
+                        </LinearGradientBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#36A2EB" />
+                            <GradientStop Offset="1.0" Color="#1976D2" />
+                        </LinearGradientBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#FFCE56" />
+                            <GradientStop Offset="1.0" Color="#F57F17" />
+                        </LinearGradientBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#4BC0C0" />
+                            <GradientStop Offset="1.0" Color="#00796B" />
+                        </LinearGradientBrush>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#9966FF" />
+                            <GradientStop Offset="1.0" Color="#512DA8" />
+                        </LinearGradientBrush>
+                    </charts:DoughnutSeries.PaletteBrushes>
+
+                    <charts:DoughnutSeries.CenterView>
+
+                        <Border HeightRequest="{Binding CenterHoleSize}" WidthRequest="{Binding CenterHoleSize}" StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="80"/>
+                            </Border.StrokeShape>
+                            <VerticalStackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                <!--<Label Text="Total:" TextColor="#000000" FontSize="Medium" FontAttributes="Bold" />-->
+                                <!--<Label Text="{Binding TotalTransactionsAmount, Source={x:Reference CategoryDoughnutSeries}}" ,StringFormat='₹{0:F2}'}" /> -->
+
+                                <Label Text="{Binding TotalTransactionsAmount, StringFormat='₹{0:F2}'}" TextColor="#000000" FontSize="Medium" FontAttributes="Bold" />
+
+                            </VerticalStackLayout>
+                        </Border>
+                    </charts:DoughnutSeries.CenterView>
+
+                </charts:DoughnutSeries>
+
+               
+            </charts:SfCircularChart>
+        </Grid>
+
+        <!-- 3rd Row: Syncfusion TabView -->
+
+        <tabview:SfTabView
+            x:Name="tabViewTransactionType"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            FontAutoScalingEnabled="True"
+            IndicatorBackground="#7F3DFF"
+            IndicatorCornerRadius="30"
+            IndicatorPlacement="Fill"
+            Padding="5"
+            SelectionChanged="TabViewTransactionType_SelectionChanged"
+            TabBarBackground="#F1F1FA">
+
+            <tabview:SfTabView.Items>
+                <tabview:SfTabItem
+                    FontAttributes="Bold"
+                    Header="Expense"
+                    TextColor="#000000" FontSize="16" />
+
+                <tabview:SfTabItem
+                    FontAttributes="Bold"
+                    Header="Income"
+                    TextColor="#000000" FontSize="16" />
+            </tabview:SfTabView.Items>
+        </tabview:SfTabView>
+
+        <!-- 5th Row: CollectionView -->
+
+
+        <HorizontalStackLayout
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            BackgroundColor="Transparent">
+
+            <CollectionView
+                x:Name="TransactionsCollectionView"
+                BackgroundColor="Transparent"
+                IsVisible="{Binding IsSplineAreaChartVisible}"
+                ItemsSource="{Binding FilteredTransactions}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="190" />
+                                <ColumnDefinition Width="130" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                BackgroundColor="Beige"
+                                Padding="10">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Image
+                                    HeightRequest="30"
+                                    HorizontalOptions="Center"
+                                    Source="{Binding Category, Converter={StaticResource CategoryToImageSourceConverter}}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="30" />
+                            </Border>
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="5, 0, 0, 0"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Title}"
+                                TextColor="#292B2D" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Amount}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Value="Expense"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Red" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Value="Income"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Green" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Value="Scan"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Blue" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="5, 0, 0, 0"
+                                FontSize="12"
+                                Text="{Binding IsManual}"
+                                TextColor="#91919F">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Value="1"
+                                        Binding="{Binding IsManual}"
+                                        TargetType="Label">
+                                        <Setter Property="Text" Value="Manual" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Value="0"
+                                        Binding="{Binding IsManual}"
+                                        TargetType="Label">
+                                        <Setter Property="Text" Value="Auto fetch - SMS" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                FontSize="12"
+                                Text="{Binding Date}"
+                                TextColor="#91919F" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView
+                x:Name="TransactionsByCategoriesCollectionView"
+                IsGrouped="true"
+                IsVisible="{Binding IsCircularChartVisible}"
+                ItemsSource="{Binding GroupedCategoryTransactions}">
+
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="models:TransactionCategoryGroup">
+                        <Grid
+                            BackgroundColor="Transparent"
+                            ColumnDefinitions="*"
+                            Padding="10"
+                            RowDefinitions="Auto, Auto"
+                            RowSpacing="5"
+                            WidthRequest="400">
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GraphAndTrendsViewModel}}, Path=ToggleGroupCommand}" CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+
+                            <HorizontalStackLayout Grid.Row="0" Spacing="10">
+                                <Image
+                                    HeightRequest="20"
+                                    Source="{Binding GroupIcon}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="{Binding Category}"
+                                    TextColor="Blue" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="{Binding TotalAmount, StringFormat='₹{0:F2}'}">
+
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Value="Expense"
+                                            Binding="{Binding TransactionType}"
+                                            TargetType="Label">
+                                            <Setter Property="TextColor" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Value="Income"
+                                            Binding="{Binding TransactionType}"
+                                            TargetType="Label">
+                                            <Setter Property="TextColor" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Value="Scan"
+                                            Binding="{Binding TransactionType}"
+                                            TargetType="Label">
+                                            <Setter Property="TextColor" Value="Blue" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+
+                                </Label>
+
+                            </HorizontalStackLayout>
+
+                            <progressBar:SfLinearProgressBar
+                                Grid.Row="1"
+                                Progress="50"
+                                ProgressCornerRadius="5"
+                                ProgressHeight="10"
+                                TrackCornerRadius="5"
+                                TrackHeight="10" BackgroundColor="#7F3DFF" />
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            IsVisible="{Binding IsExpanded, Source={RelativeSource AncestorType={x:Type models:TransactionCategoryGroup}}}"
+                            Padding="10"
+                            RowSpacing="5"
+                            WidthRequest="400">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--<Border
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                BackgroundColor="Beige"
+                                Padding="10">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+
+                            </Border>-->
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="5, 0, 0, 0"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Title}"
+                                TextColor="#292B2D" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Amount}">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Value="Expense"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Red" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Value="Income"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Green" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Value="Scan"
+                                        Binding="{Binding TransactionType}"
+                                        TargetType="Label">
+                                        <Setter Property="TextColor" Value="Blue" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <!--<ProgressBar
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                HeightRequest="30"
+                                Progress="{Binding Amount}"
+                                ProgressColor="Blue" />-->
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </HorizontalStackLayout>
+
+
+    </Grid>
+
 </ContentPage>

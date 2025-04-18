@@ -191,52 +191,174 @@ namespace SmartExpenseApp.ViewModels
 
         private async Task ReadSMSMessagesAsync(int smsCount)
         {
-            var res = await CheckAndRequestSMSPermission();
-            if (res.Equals(PermissionStatus.Granted))
+
+            #region "UNCOMMENT THIS"
+
+            //            var res = await CheckAndRequestSMSPermission();
+            //            if (res.Equals(PermissionStatus.Granted))
+            //            {
+            //#if ANDROID
+            //                string INBOX = "content://sms/inbox";
+            //                string[] reqCols = new string[] { "_id", "thread_id", "address", "person", "date", "body", "type" };
+            //                Android.Net.Uri uri = Android.Net.Uri.Parse(INBOX);
+
+            //                string sortOrder = string.Concat("date DESC LIMIT ", smsCount);
+            //                Android.Database.ICursor cursor = Platform.CurrentActivity.ContentResolver.Query(uri, reqCols, null, null, sortOrder);
+
+            //                if (cursor.MoveToFirst())
+            //                {
+            //                    SMSMessages.Clear();
+            //                    TotalCreditTransactionsAmount = 0;
+            //                    TotalDebitTransactionsAmount = 0;
+
+            //                    do
+            //                    {
+            //                        var message = cursor.GetString(cursor.GetColumnIndex(reqCols[5]));
+
+            //                        if (MessageHasKeywords(message))
+            //                        {
+            //                            var smsMessage = new SMSMessageModel
+            //                            {
+            //                                MessageId = cursor.GetString(cursor.GetColumnIndex(reqCols[0])),
+            //                                ThreadId = cursor.GetString(cursor.GetColumnIndex(reqCols[1])),
+            //                                Address = cursor.GetString(cursor.GetColumnIndex(reqCols[2])),
+            //                                Name = cursor.GetString(cursor.GetColumnIndex(reqCols[3])),
+            //                                Date = ConvertEpochToDateTime(cursor.GetString(cursor.GetColumnIndex(reqCols[4]))),
+            //                                Message = cursor.GetString(cursor.GetColumnIndex(reqCols[5])),
+            //                                Type = cursor.GetString(cursor.GetColumnIndex(reqCols[6]))
+            //                            };
+
+            //                            SMSMessages.Add(smsMessage);
+            //                        }                      
+
+            //                    } while (cursor.MoveToNext());
+
+            //                    //await _smartExpenseAppDatabase.DeleteAllTransactionsAsync();
+
+            //                    await _smartExpenseAppDatabase.TransformAndSaveSMSMessagesAsync(SMSMessages);
+            //                }
+            //#endif
+            //            }
+
+            #endregion
+
+            GenerateStaticSMSMessagesData();
+
+            await _smartExpenseAppDatabase.DeleteAllTransactionsAsync();
+            await _smartExpenseAppDatabase.TransformAndSaveSMSMessagesAsync(SMSMessages);
+        }
+
+        #region "DELETE THIS"
+
+        private void GenerateStaticSMSMessagesData()
+        {
+            var random = new Random();
+
+            // Generate messages for today
+            for (int i = 0; i < 2; i++)
             {
-#if ANDROID
-                string INBOX = "content://sms/inbox";
-                string[] reqCols = new string[] { "_id", "thread_id", "address", "person", "date", "body", "type" };
-                Android.Net.Uri uri = Android.Net.Uri.Parse(INBOX);
-
-                string sortOrder = string.Concat("date DESC LIMIT ", smsCount);
-                Android.Database.ICursor cursor = Platform.CurrentActivity.ContentResolver.Query(uri, reqCols, null, null, sortOrder);
-
-                if (cursor.MoveToFirst())
+                SMSMessages.Add(new SMSMessageModel
                 {
-                    SMSMessages.Clear();
-                    TotalCreditTransactionsAmount = 0;
-                    TotalDebitTransactionsAmount = 0;
+                    MessageId = Guid.NewGuid().ToString(),
+                    ThreadId = Guid.NewGuid().ToString(),
+                    Address = $"Sender{i}",
+                    Name = $"Sender Name {i}",
+                    Date = DateTime.Now.AddMinutes(-i * 10).ToString("g"),
+                    Message = GenerateRandomMessage(random),
+                    Type = "1"
+                });
+            }
 
-                    do
-                    {
-                        var message = cursor.GetString(cursor.GetColumnIndex(reqCols[5]));
+            // Generate messages for this week
+            for (int i = 0; i < 4; i++)
+            {
+                SMSMessages.Add(new SMSMessageModel
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    ThreadId = Guid.NewGuid().ToString(),
+                    Address = $"Sender{i + 10}",
+                    Name = $"Sender Name {i + 10}",
+                    Date = DateTime.Now.AddDays(-i % 7).ToString("g"),
+                    Message = GenerateRandomMessage(random),
+                    Type = "1"
+                });
+            }
 
-                        if (MessageHasKeywords(message))
-                        {
-                            var smsMessage = new SMSMessageModel
-                            {
-                                MessageId = cursor.GetString(cursor.GetColumnIndex(reqCols[0])),
-                                ThreadId = cursor.GetString(cursor.GetColumnIndex(reqCols[1])),
-                                Address = cursor.GetString(cursor.GetColumnIndex(reqCols[2])),
-                                Name = cursor.GetString(cursor.GetColumnIndex(reqCols[3])),
-                                Date = ConvertEpochToDateTime(cursor.GetString(cursor.GetColumnIndex(reqCols[4]))),
-                                Message = cursor.GetString(cursor.GetColumnIndex(reqCols[5])),
-                                Type = cursor.GetString(cursor.GetColumnIndex(reqCols[6]))
-                            };
+            // Generate messages for this month
+            for (int i = 0; i < 10; i++)
+            {
+                SMSMessages.Add(new SMSMessageModel
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    ThreadId = Guid.NewGuid().ToString(),
+                    Address = $"Sender{i + 30}",
+                    Name = $"Sender Name {i + 30}",
+                    Date = DateTime.Now.AddDays(-i % 30).ToString("g"),
+                    Message = GenerateRandomMessage(random),
+                    Type = "1"
+                });
+            }
 
-                            SMSMessages.Add(smsMessage);
-                        }                      
+            // Generate messages for the previous month
+            for (int i = 0; i < 5; i++)
+            {
+                SMSMessages.Add(new SMSMessageModel
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    ThreadId = Guid.NewGuid().ToString(),
+                    Address = $"Sender{i + 50}",
+                    Name = $"Sender Name {i + 50}",
+                    Date = DateTime.Now.AddMonths(-1).AddDays(-i).ToString("g"),
+                    Message = GenerateRandomMessage(random),
+                    Type = "1"
+                });
+            }
 
-                    } while (cursor.MoveToNext());
-
-                    //await _smartExpenseAppDatabase.DeleteAllTransactionsAsync();
-
-                    await _smartExpenseAppDatabase.TransformAndSaveSMSMessagesAsync(SMSMessages);
-                }
-#endif
+            // Generate messages for two months ago
+            for (int i = 0; i < 5; i++)
+            {
+                SMSMessages.Add(new SMSMessageModel
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    ThreadId = Guid.NewGuid().ToString(),
+                    Address = $"Sender{i + 55}",
+                    Name = $"Sender Name {i + 55}",
+                    Date = DateTime.Now.AddMonths(-2).AddDays(-i).ToString("g"),
+                    Message = GenerateRandomMessage(random),
+                    Type = "1"
+                });
             }
         }
+
+        private string GenerateRandomMessage(Random random)
+        {
+            // Randomly decide if the message is a credit or debit transaction
+            bool isCredit = random.Next(0, 2) == 0;
+
+            if (isCredit)
+            {
+                // Generate a random credit transaction message
+                double amount = Math.Round(random.NextDouble() * 10000, 2); // Random amount between 0 and 10,000
+                string name = GenerateRandomName(random);
+                return $"Dear Customer, INR {amount} credited to your A/c No XX0320 on {DateTime.Now:dd/MM/yyyy} through NEFT by {name}.";
+            }
+            else
+            {
+                // Generate a random debit transaction message
+                double amount = Math.Round(random.NextDouble() * 10000, 2); // Random amount between 0 and 10,000
+                string name = GenerateRandomName(random);
+                return $"Dear UPI user A/C X0320 debited by {amount} on date {DateTime.Now:ddMMMyy} trf to {name} Refno {random.Next(100000000, 999999999)}.";
+            }
+        }
+
+        private string GenerateRandomName(Random random)
+        {
+            // List of random names
+            var names = new[] { "ABC", "XYZ Corp", "John Doe", "Jane Smith", "F3 Two", "QuickPay", "PayPal", "Amazon", "Google", "Microsoft" };
+            return names[random.Next(names.Length)];
+        }
+
+        #endregion
 
         private void UpdateTransactionAmounts(TransactionType transaction, string amount)
         {
