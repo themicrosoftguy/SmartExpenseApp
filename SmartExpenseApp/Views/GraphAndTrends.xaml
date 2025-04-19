@@ -215,7 +215,7 @@
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="190" />
+                                <ColumnDefinition Width="170" />
                                 <ColumnDefinition Width="130" />
                             </Grid.ColumnDefinitions>
 
@@ -321,7 +321,7 @@
                             Padding="10"
                             RowDefinitions="Auto, Auto"
                             RowSpacing="5"
-                            WidthRequest="400">
+                            WidthRequest="360">
 
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GraphAndTrendsViewModel}}, Path=ToggleGroupCommand}" CommandParameter="{Binding .}" />
@@ -387,7 +387,7 @@
                             IsVisible="{Binding IsExpanded, Source={RelativeSource AncestorType={x:Type models:TransactionCategoryGroup}}}"
                             Padding="10"
                             RowSpacing="5"
-                            WidthRequest="400">
+                            WidthRequest="360">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
