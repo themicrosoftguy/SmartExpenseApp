@@ -51,6 +51,7 @@ namespace SmartExpenseApp.Data
 
             database = new SQLiteAsyncConnection(dbPath);
             database.CreateTableAsync<Transaction>().Wait();
+            database.CreateTableAsync<User>().Wait();
         }
 
         public async Task<List<Transaction>> GetTransactionsAsync()
@@ -218,6 +219,25 @@ namespace SmartExpenseApp.Data
             }
 
             return "Others"; // Default category if no match is found
+        }
+
+        public async Task<int> SaveUserAsync(User user)
+        {
+            if (user.ID != 0)
+            {
+                return await database.UpdateAsync(user);
+            }
+            else
+            {
+                return await database.InsertAsync(user);
+            }
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await database.Table<User>()
+                                 .Where(u => u.Email == email)
+                                 .FirstOrDefaultAsync();
         }
     }
 }

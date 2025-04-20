@@ -40,6 +40,9 @@ namespace SmartExpenseApp
             builder.Services.AddSingleton<GraphAndTrends>();
             builder.Services.AddTransient<GraphAndTrends>();
 
+            builder.Services.AddSingleton<SignUp>();
+            builder.Services.AddTransient<SignUp>();
+
             builder.Services.AddSingleton<SmartExpenseAppDatabase>(provider =>
                 new SmartExpenseAppDatabase(Constants.DatabasePath));
 

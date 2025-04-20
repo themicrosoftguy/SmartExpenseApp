@@ -91,7 +91,7 @@
             <Label Text="Already have an account? " FontSize="14" TextColor="Gray" />
             <Label Text="Login" FontSize="14" TextColor="#8B5CF6" FontAttributes="Bold">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                 </Label.GestureRecognizers>
             </Label>
         </HorizontalStackLayout>
